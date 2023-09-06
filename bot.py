@@ -6,4 +6,4 @@ def run():
 	return print("hola perraaaa")
 
 	s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
-	s.connect(("192.168.153.128",445))
+	s.connect(("10.35.152.3",445))
