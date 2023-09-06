@@ -1,7 +1,5 @@
-from socket import socket
-from subprocess import getoutput
-from os import chdir, getcwd
-from time import sleep
+import os
+import socket,subprocess
 
 def run():
 	return os.listdir()
