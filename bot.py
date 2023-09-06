@@ -5,7 +5,7 @@ from time import sleep
 
 def run():
 	
-	server_address = ('192.168.153.128', 5000)
+	server_address = ('192.168.153.128', 445)
 	
 	server_socket = socket()
 	
