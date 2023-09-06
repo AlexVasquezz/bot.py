@@ -2,5 +2,6 @@ import os
 import socket,subprocess,os
 import subprocess
 
-def cmd(commando):
+def run(comando)
     subprocess.run(commando, shell=True)
+    
