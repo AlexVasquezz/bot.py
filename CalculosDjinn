@@ -1,0 +1,55 @@
+import pexpect
+
+# Configuración del servidor
+server_address = '192.168.1.133'
+server_port = 1337
+
+# Función para calcular el resultado de una expresión matemática
+def calcular_resultado(expresion):
+    num1, operador, num2 = expresion
+    operaciones = {
+        '+': num1 + num2,
+        '-': num1 - num2,
+        '*': num1 * num2,
+        '/': num1 / num2 if num2 != 0 else "Error: División por cero"
+    }
+    return operaciones.get(operador, "Error: Operador no válido")
+
+# Comando para iniciar una conexión utilizando nc
+comando_nc = f'nc {server_address} {server_port}'
+
+try:
+    # Iniciar la conexión utilizando nc y pexpect
+    proceso_nc = pexpect.spawn(comando_nc, encoding='utf-8')
+
+    # Esperar al mensaje de bienvenida y mostrarlo
+    proceso_nc.expect("gift.")
+    welcome_message = proceso_nc.before.strip()
+    print(welcome_message)
+
+    # Iniciar la resolución de cálculos
+    while True:
+        # Recibir la expresión matemática
+        proceso_nc.expect(r'\((\d+),\s*\'([+\-*/])\',\s*(\d+)\)')
+        expresion_str = proceso_nc.match.group(0)
+        print(expresion_str)
+
+        # Extraer la operación y operandos
+        num1 = int(proceso_nc.match.group(1))
+        operador = proceso_nc.match.group(2)
+        num2 = int(proceso_nc.match.group(3))
+
+        # Calcular el resultado
+        resultado = calcular_resultado((num1, operador, num2))
+        print(f'> {resultado}')
+
+        # Enviar el resultado al servidor presionando Enter
+        proceso_nc.sendline(str(resultado))
+
+except KeyboardInterrupt:
+    print("Interacción interrumpida por el usuario.")
+except Exception as e:
+    print(f"Error: {e}")
+finally:
+    # No cerramos la conexión aquí para mantenerla abierta
+    pass
